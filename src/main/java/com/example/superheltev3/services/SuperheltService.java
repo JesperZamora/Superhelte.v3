@@ -21,7 +21,7 @@ public class SuperheltService {
     }
 
     // One hero by index number
-    public Superhelt getSuperhelt(String navn){
+    public Superhelt getSuperhelt(String navn) throws Exception {
         return superheltRepo.getSuperhelt(navn);
     }
 
@@ -33,7 +33,7 @@ public class SuperheltService {
         return superheltRepo.editSuperhelt(superhelt);
     }
 
-    public String sletSuperhelt(String navn){
+    public String sletSuperhelt(String navn) throws Exception {
         return superheltRepo.sletSuperhelt(navn);
     }
 }

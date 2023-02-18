@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import com.example.superheltev3.services.SuperheltService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -23,15 +24,22 @@ public class SuperheltController {
     @RequestMapping("/")
     public ResponseEntity<List<Superhelt>> alleSuperhelte() {
         List<Superhelt> superheltListe = superheltService.getSuperheltList();
-
         return new ResponseEntity<>(superheltListe, HttpStatus.OK);
     }
 
     // one superhero by index number
     @RequestMapping("/{navn}")
     public ResponseEntity<Superhelt> enkeltSuperhelt(@PathVariable String navn) {
-        Superhelt superhelt = superheltService.getSuperhelt(navn.toLowerCase());
-        return new ResponseEntity<>(superhelt, HttpStatus.OK);
+        try {
+            Superhelt superhelt = superheltService.getSuperhelt(navn.toLowerCase());
+            return new ResponseEntity<>(superhelt, HttpStatus.OK);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+
+        }
+
     }
 
     // all heroes in HTML + RequestParam
@@ -76,7 +84,12 @@ public class SuperheltController {
 
     @DeleteMapping("/slet/{navn}")
     public ResponseEntity<String> sletSuperhelt(@PathVariable String navn) {
-        String response = superheltService.sletSuperhelt(navn.toLowerCase());
+        String response;
+        try {
+            response = superheltService.sletSuperhelt(navn.toLowerCase());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

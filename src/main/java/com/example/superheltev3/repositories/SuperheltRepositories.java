@@ -24,13 +24,15 @@ public class SuperheltRepositories {
         return superheltList;
     }
 
-    public Superhelt getSuperhelt(String navn){
+    public Superhelt getSuperhelt(String navn) throws Exception{
         for(Superhelt superhelt : superheltList) {
-            if (superhelt.getHeroName().toLowerCase().contains(navn.toLowerCase())) {
+            if (!superhelt.getHeroName().toLowerCase().contains(navn.toLowerCase())) {
+                throw new Exception("No match");
+            } else {
                 return superhelt;
             }
         }
-        return null;
+       return null;
     }
 
     public Superhelt addSuperhelt(Superhelt superhelt){
@@ -50,7 +52,7 @@ public class SuperheltRepositories {
     }
 
 
-    public String sletSuperhelt(String navn) {
+    public String sletSuperhelt(String navn) throws Exception {
         Superhelt superhelt = getSuperhelt(navn);
         superheltList.remove(superhelt);
         return "Superhelt slettet";
