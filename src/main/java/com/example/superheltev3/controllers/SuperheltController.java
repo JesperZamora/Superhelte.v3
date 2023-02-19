@@ -1,5 +1,6 @@
 package com.example.superheltev3.controllers;
 
+import com.example.superheltev3.Exception.ResourceNotFoundException;
 import com.example.superheltev3.models.Superhelt;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,6 @@ public class SuperheltController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-
         }
 
     }
@@ -70,6 +70,7 @@ public class SuperheltController {
         return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
     }
 
+
     @PostMapping("/opret")
     public ResponseEntity<Superhelt> tilføjSuperhelt(@RequestBody Superhelt superhelt) {
         Superhelt superhelt1 = superheltService.addSuperhelt(superhelt);
@@ -78,8 +79,12 @@ public class SuperheltController {
 
     @PutMapping("/ret")
     public ResponseEntity<Superhelt> retSuperhelt(@RequestBody Superhelt superhelt) {
-        Superhelt superhelt2 = superheltService.editSuperhelt(superhelt);
-        return new ResponseEntity<>(superhelt2, HttpStatus.OK);
+        try {
+            Superhelt superhelt2 = superheltService.editSuperhelt(superhelt);
+            return new ResponseEntity<>(superhelt2, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @DeleteMapping("/slet/{navn}")
@@ -87,10 +92,9 @@ public class SuperheltController {
         String response;
         try {
             response = superheltService.sletSuperhelt(navn.toLowerCase());
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 }

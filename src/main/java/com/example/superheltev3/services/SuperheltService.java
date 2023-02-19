@@ -1,5 +1,6 @@
 package com.example.superheltev3.services;
 
+import com.example.superheltev3.Exception.ResourceNotFoundException;
 import com.example.superheltev3.models.Superhelt;
 import org.springframework.stereotype.Service;
 import com.example.superheltev3.repositories.SuperheltRepositories;
@@ -21,7 +22,7 @@ public class SuperheltService {
     }
 
     // One hero by index number
-    public Superhelt getSuperhelt(String navn) throws Exception {
+    public Superhelt getSuperhelt(String navn) throws ResourceNotFoundException {
         return superheltRepo.getSuperhelt(navn);
     }
 
@@ -29,7 +30,7 @@ public class SuperheltService {
         return superheltRepo.addSuperhelt(superhelt);
     }
 
-    public Superhelt editSuperhelt(Superhelt superhelt){
+    public Superhelt editSuperhelt(Superhelt superhelt) throws ResourceNotFoundException {
         return superheltRepo.editSuperhelt(superhelt);
     }
 

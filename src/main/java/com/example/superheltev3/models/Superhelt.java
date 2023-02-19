@@ -29,21 +29,6 @@ public class Superhelt {
         return age;
     }
 
-    public void setHeroName(String heroName) {
-        this.heroName = heroName;
-    }
-
-    public void setCivilName(String civilName) {
-        this.civilName = civilName;
-    }
-
-    public void setHeroPower(String heroPower) {
-        this.heroPower = heroPower;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 
     public String toString() {
         return String.format("""
